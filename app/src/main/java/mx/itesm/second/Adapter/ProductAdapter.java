@@ -52,7 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     {
         final Product current = products.get(position);
         holder.title.setText( current.getName());
-        holder.price.setText( String.format( "$%s",  current.getPrice() ) );
+        holder.price.setText( String.format( "$%s", current.getPrice() ) );
         holder.img.setImageURI( Uri.parse( current.getImg() ) );
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
