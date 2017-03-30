@@ -3,7 +3,6 @@ package mx.itesm.second.Adapter;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     {
         final Product current = products.get(position);
         holder.title.setText( current.getName());
-        holder.description.setText(current.getDescription());
+        holder.price.setText( String.format( "$%s",  current.getPrice() ) );
         holder.img.setImageURI( Uri.parse( current.getImg() ) );
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
@@ -83,7 +82,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         @BindView(R.id.product_name) TextView title;
-        @BindView(R.id.product_description) TextView description;
+        @BindView(R.id.product_price) TextView price;
         @BindView(R.id.product_image) SimpleDraweeView img;
 
         public ViewHolder(View view)
