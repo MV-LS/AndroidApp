@@ -86,6 +86,7 @@ public class ReportsFragment extends Fragment
         //TODO AGREGAR DATOS DUMMY A LA GRAFICA, AGREGAR UN MAPA
         //Hacer Request al server
             //On Response
+
                 Date now = new Date();
                 calendar.setTime(now);
 

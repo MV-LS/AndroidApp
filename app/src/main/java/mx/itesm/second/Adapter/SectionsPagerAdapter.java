@@ -7,6 +7,8 @@ package mx.itesm.second.Adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import mx.itesm.second.Fragments.MapFragment;
 import mx.itesm.second.Fragments.PlaceHolderFragment;
 import mx.itesm.second.Fragments.ProductsFragment;
 import mx.itesm.second.Fragments.ReportsFragment;
@@ -32,7 +34,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
             case 1:
                 return ReportsFragment.newInstance();
             default:
-                return PlaceHolderFragment.newInstance( position+1);
+                return MapFragment.newInstance();
         }
     }
 

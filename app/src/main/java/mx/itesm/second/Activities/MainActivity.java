@@ -18,12 +18,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import mx.itesm.second.Adapter.SectionsPagerAdapter;
 
+import mx.itesm.second.Fragments.MapFragment;
 import mx.itesm.second.Fragments.ProductsFragment;
 import mx.itesm.second.Fragments.ReportsFragment;
 import mx.itesm.second.Models.Product;
 import mx.itesm.second.R;
 
-public class MainActivity extends AppCompatActivity implements ProductsFragment.OnProductsListFragmentInteractionListener, ReportsFragment.OnReportsFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements ProductsFragment.OnProductsListFragmentInteractionListener, ReportsFragment.OnReportsFragmentInteractionListener,MapFragment.OnMapFragmentInteractionListener
 {
     @BindView(R.id.toolbar) Toolbar toolbar;
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -88,5 +89,10 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
     public void onReportsFragmentInteraction()
     {
         //Fragmento de Reportes quiere decir algo
+    }
+
+    @Override
+    public void OnMapFragmentInteraction() {
+
     }
 }
