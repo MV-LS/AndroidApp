@@ -1,16 +1,22 @@
 package mx.itesm.second.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
+//import com.google.android.gms.maps.model.LatLng;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
@@ -25,19 +31,20 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.LineChartView;
+import mx.itesm.second.Models.Venta;
 import mx.itesm.second.R;
 
 public class ReportsFragment extends Fragment
 {
-    //TODO COMPRENDER COMO FUNCIONAN LOS CHARTS
     public final static String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug","Sep", "Oct", "Nov", "Dec",};
     public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
+    private Unbinder unbinder;
+    private List<Venta> ventas_por_mes;
     private OnReportsFragmentInteractionListener mListener;
 
-    //Charts
-    private LineChartView chartTop;
-    private ColumnChartView chartBottom;
+    @BindView(R.id.chart_top) LineChartView chartTop;
+    @BindView(R.id.chart_bottom) ColumnChartView chartBottom;
 
     private LineChartData lineData;
     private ColumnChartData columnData;
@@ -48,6 +55,12 @@ public class ReportsFragment extends Fragment
     {
         ReportsFragment fragment = new ReportsFragment();
         return fragment;
+    }
+
+    @Override public void onDestroyView()
+    {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -61,37 +74,42 @@ public class ReportsFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_reports, container, false);
-
-        // *** TOP LINE CHART ***
-        chartTop = (LineChartView) rootView.findViewById(R.id.chart_top);
-
-        // Generate and set data for line chart
-        generateInitialLineData();
-
-        // *** BOTTOM COLUMN CHART ***
-
-        chartBottom = (ColumnChartView) rootView.findViewById(R.id.chart_bottom);
-
-        generateColumnData();
+        unbinder = ButterKnife.bind(this, rootView);
+        ventas_por_mes = new ArrayList<>(12);
+        loadData();
 
         return rootView;
+    }
+    private void loadData()
+    {
+        Calendar calendar = Calendar.getInstance();
+        //TODO AGREGAR DATOS DUMMY A LA GRAFICA, AGREGAR UN MAPA
+        //Hacer Request al server
+            //On Response
+                Date now = new Date();
+                calendar.setTime(now);
+
+                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK); //Domingo = 1, Sabado = 7
+
+                generateInitialLineData();
+                generateColumnData();
 
     }
-
     private void generateColumnData()
     {
-        int numSubcolumns = 1;
+        int numSubcolumns = 1; //1 Columna por mes
         int numColumns = months.length;
 
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<Column> columns = new ArrayList<Column>();
         List<SubcolumnValue> values;
-        for (int i = 0; i < numColumns; ++i) {
 
+        for (int i = 0; i < numColumns; ++i) //Iterar por cada mes
+        {
             values = new ArrayList<SubcolumnValue>();
-            for (int j = 0; j < numSubcolumns; ++j) {
+
+            for (int j = 0; j < numSubcolumns; ++j) //Generar aleatoriamente la altura de la barra
                 values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
-            }
 
             axisValues.add(new AxisValue(i).setLabel(months[i]));
 
@@ -101,12 +119,12 @@ public class ReportsFragment extends Fragment
         columnData = new ColumnChartData(columns);
 
         columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2));
+        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2)); //3 letras por mes
 
-        chartBottom.setColumnChartData(columnData);
+        chartBottom.setColumnChartData(columnData); //Inicializara el chart
 
         // Set value touch listener that will trigger changes for chartTop.
-        chartBottom.setOnValueTouchListener(new ValueTouchListener());
+        chartBottom.setOnValueTouchListener( new ValueTouchListener() );
 
         // Set selection mode to keep selected month column highlighted.
         chartBottom.setValueSelectionEnabled(true);
@@ -131,13 +149,15 @@ public class ReportsFragment extends Fragment
      * Generates initial data for line chart. At the begining all Y values are equals 0. That will change when user
      * will select value on column chart.
      */
-    private void generateInitialLineData() {
+    private void generateInitialLineData()
+    {
         int numValues = 7;
 
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<PointValue> values = new ArrayList<PointValue>();
-        for (int i = 0; i < numValues; ++i) {
-            values.add(new PointValue(i, 0));
+        for (int i = 0; i < numValues; ++i)
+        {
+            values.add(new PointValue(i, 0)); //Init 0
             axisValues.add(new AxisValue(i).setLabel(days[i]));
         }
 
