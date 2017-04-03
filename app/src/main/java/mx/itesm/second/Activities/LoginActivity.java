@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
+                    progressBar.setVisibility(View.INVISIBLE);
                     VolleyLog.d(TAG,error.getMessage());
                 }
             });
