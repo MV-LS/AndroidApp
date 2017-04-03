@@ -2,6 +2,7 @@ package mx.itesm.second.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,7 +82,7 @@ public class VentaActivity extends AppCompatActivity
                 params.put("product", product.getId() );
                 params.put("quantity", productStock.getText() );
                 params.put("location",latlng);
-                params.put("type",0); //Comprador
+                params.put("type", PreferenceManager.getDefaultSharedPreferences(VentaActivity.this).getInt("access", 0)); //Comprador
                 sale.put("sale",params);
             }
             catch (JSONException e)
