@@ -1,7 +1,9 @@
 package mx.itesm.second.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mx.itesm.second.Activities.VentaActivity;
 import mx.itesm.second.Models.Product;
 import mx.itesm.second.R;
 
@@ -25,11 +28,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 {
     private List<Product> products;
     private Activity activity;
+    private String token;
 
-    public ProductAdapter(Activity activity, List<Product> ps)
+    public ProductAdapter(Activity activity, List<Product> ps,String token)
     {
         this.products = ps;
         this.activity = activity;
+        this.token = token;
     }
 
     public void addProducts(List<Product> cs)
@@ -59,12 +64,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View v)
             {
-                /*
-                TODO :: Pasar a otra actividad al darleClick para seguir proceso de compra
-                Intent intent = new Intent(activity,CardDetailActivity.class);
-                intent.putExtras( Product.asBundle(current) );
+                Intent intent = new Intent(activity,VentaActivity.class);
+                Bundle b = Product.toBundle( current );
+                b.putString("token",token);
+                intent.putExtras( b );
                 activity.startActivity(intent);
-                */
             }
         });
     }

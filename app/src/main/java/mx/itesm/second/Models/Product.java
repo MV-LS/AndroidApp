@@ -1,5 +1,7 @@
 package mx.itesm.second.Models;
 
+import android.os.Bundle;
+
 /**
  * Created by rubcuadra on 3/29/17.
  */
@@ -71,5 +73,28 @@ public class Product
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public static Bundle toBundle(Product p)
+    {
+        Bundle b = new Bundle();
+            b.putString( "id", p.getId() );
+            b.putString("name", p.getName());
+            b.putString("description",p.getDescription() );
+            b.putDouble("price",p.getPrice() );
+            b.putInt("stock",p.getStock());
+            b.putString("img",p.getImg());
+        return b;
+    }
+    public static Product fromBundle(Bundle extras)
+    {
+        Product p = new Product();
+            p.setId( extras.getString("id") );
+            p.setName( extras.getString("name") );
+            p.setDescription( extras.getString("description") );
+            p.setPrice(extras.getDouble("price"));
+            p.setStock( extras.getInt("stock") );
+            p.setImg( extras.getString("img"));
+        return p;
     }
 }

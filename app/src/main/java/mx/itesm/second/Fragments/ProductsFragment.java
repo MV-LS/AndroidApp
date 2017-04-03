@@ -80,7 +80,7 @@ public class ProductsFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_products_list, container, false);
         token = getArguments().getString("token");
         unbinder = ButterKnife.bind(this, view);
-        mProdAdapter = new ProductAdapter(CONTEXT,new ArrayList<Product>());
+        mProdAdapter = new ProductAdapter(CONTEXT,new ArrayList<Product>(),token);
         mRecyclerView.setLayoutManager(new GridLayoutManager(CONTEXT,2));
         mRecyclerView.setAdapter( mProdAdapter );
         loadCards();

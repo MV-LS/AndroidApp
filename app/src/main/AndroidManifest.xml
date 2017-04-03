@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.LOCATION_HARDWARE"/>
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
 
     <application
         android:name=".Requester"
@@ -18,8 +18,7 @@
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activities.LoginActivity"
             android:label="@string/app_name"
@@ -33,7 +32,9 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCBpyg8n4JttgbyCms0-EbyYkiOmgT2bR0"/>
+            android:value="AIzaSyCBpyg8n4JttgbyCms0-EbyYkiOmgT2bR0" />
 
+        <activity android:name=".Activities.VentaActivity"></activity>
     </application>
+
 </manifest>
