@@ -81,7 +81,7 @@ public class VentaActivity extends AppCompatActivity
                 params.put("product", product.getId() );
                 params.put("quantity", productStock.getText() );
                 params.put("location",latlng);
-                params.put("type",1); //VENDEDOR
+                params.put("type",0); //VENDEDOR
                 sale.put("sale",params);
             }
             catch (JSONException e)
