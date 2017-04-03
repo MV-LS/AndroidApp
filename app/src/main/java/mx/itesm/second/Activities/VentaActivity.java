@@ -57,7 +57,7 @@ public class VentaActivity extends AppCompatActivity
         //Fresco.initialize(this);
         setContentView(R.layout.activity_venta);
         ButterKnife.bind(this);
-        productName.setText(product.getName());
+        productName.setText( product.getName() );
         productDescr.setText( product.getDescription() );
         productStock.setText( String.valueOf(product.getStock()) );
         productPrice.setText( String.valueOf(product.getPrice())  );
@@ -79,7 +79,7 @@ public class VentaActivity extends AppCompatActivity
                 latlng.put("lat",19.359480);
                 latlng.put("lng",-99.260089);
                 params.put("product", product.getId() );
-                params.put("quantity", productStock.getText() );
+                params.put("quantity", cantidadET.getText() );
                 params.put("location",latlng);
                 params.put("type",0); //Comprador
                 sale.put("sale",params);
