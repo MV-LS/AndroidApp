@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class VentaActivity extends AppCompatActivity
     @BindView(R.id.pPrice) TextView productPrice;
     @BindView(R.id.pId) TextView productId;
     @BindView(R.id.cantidadEditText) EditText cantidadET;
+    @BindView(R.id.buttonBorrar) Button borrar;
 
     @BindView(R.id.productImage) SimpleDraweeView drawee_image;
 
@@ -64,6 +66,10 @@ public class VentaActivity extends AppCompatActivity
         productPrice.setText( String.valueOf(product.getPrice())  );
         productId.setText( product.getId() );
         drawee_image.setImageURI( Uri.parse( product.getImg() )  );
+        if (PreferenceManager.getDefaultSharedPreferences(VentaActivity.this).getInt("access", 0) == 2)
+        {
+            
+        }
     }
 
     @OnClick(R.id.buttonComprar)
@@ -71,7 +77,7 @@ public class VentaActivity extends AppCompatActivity
     {
 
             String url = "http://ddm.coma.mx/api/sales";
-
+            if ( Integer.parseInt(cantidadET.getText().toString())  > product.getStock()) return;
             JSONObject params = new JSONObject();
             JSONObject latlng = new JSONObject();
             JSONObject sale = new JSONObject();
@@ -80,7 +86,7 @@ public class VentaActivity extends AppCompatActivity
                 latlng.put("lat",19.359480);
                 latlng.put("lng",-99.260089);
                 params.put("product", product.getId() );
-                params.put("quantity", cantidadET.getText() );
+                params.put("quantity", cantidadET.getText().toString() );
                 params.put("location",latlng);
                 params.put("type", PreferenceManager.getDefaultSharedPreferences(VentaActivity.this).getInt("access", 0)); //Comprador
                 sale.put("sale",params);
