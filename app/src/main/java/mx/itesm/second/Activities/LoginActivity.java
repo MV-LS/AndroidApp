@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity
 {
     @BindView(R.id.editText2) EditText et_password;
     @BindView(R.id.editText10) EditText et_email;
+    @BindView(R.id.pbar) View progressBar;
 
     private static final String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final String TAG = "LOGINACTIVITY";
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity
     @OnClick(R.id.button3)
     public void login(View view)
     {
+        progressBar.setVisibility(View.VISIBLE);
         if (et_email.getText().toString().matches(emailRegex) && et_password.getText().toString().length()!=0)
         {
             String url = "http://ddm.coma.mx/api/authenticate";
@@ -61,6 +64,7 @@ public class LoginActivity extends AppCompatActivity
                 public void onResponse(JSONObject response)
                 {
                     Log.d(TAG,response.toString());
+                    progressBar.setVisibility(View.INVISIBLE);
                     try
                     {
                         Intent intent = new Intent( LoginActivity.this, MainActivity.class);
@@ -69,8 +73,6 @@ public class LoginActivity extends AppCompatActivity
                         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putInt("access", response.getJSONObject("user").getInt("access")).apply();
                         startActivity(intent);
                         finish();
-
-
                     }
                     catch (JSONException e)
                     {
