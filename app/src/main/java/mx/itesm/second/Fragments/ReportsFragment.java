@@ -46,14 +46,18 @@ public class ReportsFragment extends Fragment
     @BindView(R.id.chart_top) LineChartView chartTop;
     @BindView(R.id.chart_bottom) ColumnChartView chartBottom;
 
+    private String token;
     private LineChartData lineData;
     private ColumnChartData columnData;
 
     public ReportsFragment() {}
 
-    public static ReportsFragment newInstance()
+    public static ReportsFragment newInstance(String token)
     {
         ReportsFragment fragment = new ReportsFragment();
+        Bundle args = new Bundle();
+        args.putString("token", token);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -74,6 +78,7 @@ public class ReportsFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_reports, container, false);
+        token = getArguments().getString("token");
         unbinder = ButterKnife.bind(this, rootView);
         ventas_por_mes = new ArrayList<>(12);
         loadData();

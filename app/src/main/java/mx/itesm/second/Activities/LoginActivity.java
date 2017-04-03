@@ -10,10 +10,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mx.itesm.second.R;
+import mx.itesm.second.Requester;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -36,10 +46,48 @@ public class LoginActivity extends AppCompatActivity
     {
         if (et_email.getText().toString().matches(emailRegex) && et_password.getText().toString().length()!=0)
         {
-            //TODO LOGIN
-            Intent intent = new Intent( LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            String url = "http://ddm.coma.mx/api/authenticate";
+
+            JSONObject params = new JSONObject();
+            try
+            {
+                params.put("email", et_email.getText().toString() );
+                params.put("password", et_password.getText().toString() );
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url ,params,new Response.Listener<JSONObject>()
+            {
+                @Override
+                public void onResponse(JSONObject response)
+                {
+                    Log.d(TAG,response.toString());
+                    try
+                    {
+                        Intent intent = new Intent( LoginActivity.this, MainActivity.class);
+                        intent.putExtra("token", response.getString("token"));
+                        startActivity(intent);
+                        finish();
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener()
+            {
+
+                @Override
+                public void onErrorResponse(VolleyError error)
+                {
+                    VolleyLog.d(TAG,error.getMessage());
+                }
+            });
+
+            Requester.getInstance().addToRequestQueue(jsonObjReq);
         }
         else
             Toast.makeText(this, "Correo no valido", Toast.LENGTH_SHORT).show();

@@ -28,15 +28,18 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     private OnMapFragmentInteractionListener mListener;
     private Activity CONTEXT;
     private List<Marker> mMarkers;
+    private String token;
     private GoogleMap mMap;
 
     public MapFragment() {}
-    public static MapFragment newInstance()
+    public static MapFragment newInstance(String token)
     {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
+        args.putString("token",token);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -74,8 +77,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
+        token = getArguments().getString("token");
         mMap = googleMap;
-
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         //mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);

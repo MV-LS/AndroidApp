@@ -6,7 +6,7 @@ package mx.itesm.second.Models;
 
 public class Product
 {
-    private int id;
+    private String id;
     private String name;
     private String description;
     private double price;
@@ -15,9 +15,9 @@ public class Product
 
     public Product(){}
 
-    public Product(int id, String name, String description, double price, int stock, String img)
+    public Product(String id, String name, String description, double price, int stock, String img)
     {
-
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -65,11 +65,11 @@ public class Product
         this.img = img;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

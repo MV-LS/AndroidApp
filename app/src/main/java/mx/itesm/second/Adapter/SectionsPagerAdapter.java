@@ -19,9 +19,11 @@ import mx.itesm.second.Fragments.ReportsFragment;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
-
-    public SectionsPagerAdapter(FragmentManager fm) {
+    private String token;
+    public SectionsPagerAdapter(FragmentManager fm,String token)
+    {
         super(fm);
+        this.token = token;
     }
 
     @Override
@@ -30,11 +32,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0:
-                return ProductsFragment.newInstance();
+                return ProductsFragment.newInstance(token);
             case 1:
-                return ReportsFragment.newInstance();
+                return ReportsFragment.newInstance(token);
             default:
-                return MapFragment.newInstance();
+                return MapFragment.newInstance(token);
         }
     }
 
@@ -54,7 +56,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
             case 1:
                 return "Reportes";
             case 2:
-                return "Algo Mas";
+                return "Mapa";
         }
         return null;
     }
