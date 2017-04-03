@@ -108,7 +108,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     public void getMarkers()
     {
         String url = "http://ddm.coma.mx/api/sales";
-
         JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET,url, null ,new Response.Listener<JSONObject>()
         {
             @Override
