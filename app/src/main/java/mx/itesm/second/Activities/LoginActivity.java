@@ -1,29 +1,25 @@
 package mx.itesm.second.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import mx.itesm.second.R;
 import mx.itesm.second.Requester;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -69,8 +65,12 @@ public class LoginActivity extends AppCompatActivity
                     {
                         Intent intent = new Intent( LoginActivity.this, MainActivity.class);
                         intent.putExtra("token", response.getString("token"));
+                        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString("token", response.getString("token")).apply();
+                        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putInt("access", response.getJSONObject("user").getInt("access")).apply();
                         startActivity(intent);
                         finish();
+
+
                     }
                     catch (JSONException e)
                     {
