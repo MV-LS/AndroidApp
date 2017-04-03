@@ -73,6 +73,7 @@ public class VentaActivity extends AppCompatActivity
 
             JSONObject params = new JSONObject();
             JSONObject latlng = new JSONObject();
+            JSONObject sale = new JSONObject();
             try
             {
                 latlng.put("lat",19.359480);
@@ -80,14 +81,15 @@ public class VentaActivity extends AppCompatActivity
                 params.put("product", product.getId() );
                 params.put("quantity", productStock.getText() );
                 params.put("location",latlng);
-                params.put("type",1); //VENDEDOR
+                params.put("type",0); //Comprador
+                sale.put("sale",params);
             }
             catch (JSONException e)
             {
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url ,params,new Response.Listener<JSONObject>()
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url ,sale,new Response.Listener<JSONObject>()
             {
                 @Override
                 public void onResponse(JSONObject response)
