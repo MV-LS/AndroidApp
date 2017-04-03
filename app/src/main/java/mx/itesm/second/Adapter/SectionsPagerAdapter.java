@@ -20,10 +20,13 @@ import mx.itesm.second.Fragments.ReportsFragment;
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
     private String token;
-    public SectionsPagerAdapter(FragmentManager fm,String token)
+    private int screens;
+
+    public SectionsPagerAdapter(FragmentManager fm, String token, int screens)
     {
         super(fm);
         this.token = token;
+        this.screens = screens;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     @Override
     public int getCount()
     {
-        return 3; // Show 3 total pages.
+        return screens; // Show 3 total pages.
     }
 
     @Override

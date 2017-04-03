@@ -1,23 +1,20 @@
 package mx.itesm.second.Activities;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.facebook.drawee.backends.pipeline.Fresco;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import mx.itesm.second.Adapter.SectionsPagerAdapter;
-
 import mx.itesm.second.Fragments.MapFragment;
 import mx.itesm.second.Fragments.ProductsFragment;
 import mx.itesm.second.Fragments.ReportsFragment;
@@ -44,7 +41,12 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
 
         setSupportActionBar(toolbar);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),token);
+        int screens = 1;
+        if (PreferenceManager.getDefaultSharedPreferences(this).getInt("access", 0)  == 1) {
+            screens = 3;
+        }
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), token, screens);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
