@@ -9,10 +9,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +48,7 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.LineChartView;
 import mx.itesm.second.Models.Venta;
 import mx.itesm.second.R;
+import mx.itesm.second.Requester;
 
 public class ReportsFragment extends Fragment
 {
@@ -40,7 +56,7 @@ public class ReportsFragment extends Fragment
     public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
     private Unbinder unbinder;
-    private List<Venta> ventas_por_mes;
+    private List< List<Venta> > ventas_por_mes;
     private OnReportsFragmentInteractionListener mListener;
 
     @BindView(R.id.chart_top) LineChartView chartTop;
@@ -81,25 +97,61 @@ public class ReportsFragment extends Fragment
         token = getArguments().getString("token");
         unbinder = ButterKnife.bind(this, rootView);
         ventas_por_mes = new ArrayList<>(12);
+        for (int i = 0; i<12;i++) ventas_por_mes.add( new ArrayList<Venta>(7) ); //En Cada mes, por cada dia
         loadData();
 
         return rootView;
     }
     private void loadData()
     {
+        String url = "http://ddm.coma.mx/api/sales";
+        JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET,url, null ,new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                try
+                {
+                    Log.d("REPORTS",response.toString());
+                    JSONArray sales = response.getJSONArray("sales");
+                    //Parsear todas las ventas, si el mes es un Martes de Enero se introduce en
+                    //Ventas[0][2] = Venta(); //Domingo = 1, se introduce fecha-1
+
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                error.printStackTrace();
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("token", token );
+                return headers;
+            }
+        };
+        Requester.getInstance().addToRequestQueue(rq);
+
+
         Calendar calendar = Calendar.getInstance();
-        //TODO AGREGAR DATOS DUMMY A LA GRAFICA, AGREGAR UN MAPA
         //Hacer Request al server
             //On Response
-
-                Date now = new Date();
-                calendar.setTime(now);
-
-                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK); //Domingo = 1, Sabado = 7
-
-                generateInitialLineData();
-                generateColumnData();
-
+        Date now = new Date();
+        calendar.setTime(now);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK); //Domingo = 1, Sabado = 7
+        generateInitialLineData();
+        generateColumnData();
     }
     private void generateColumnData()
     {

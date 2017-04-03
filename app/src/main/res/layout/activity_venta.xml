@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mx.itesm.second.Activities.VentaActivity">
+    tools:context="mx.itesm.second.Activities.VentaActivity"
+    >
 
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -18,7 +20,9 @@
         android:layout_marginEnd="16dp"
         fresco:layout_constraintRight_toRightOf="parent"
         fresco:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        fresco:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
         android:text="Name"
@@ -81,7 +85,7 @@
         android:id="@+id/buttonComprar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Comprar"
         fresco:layout_constraintLeft_toRightOf="@+id/cantidadEditText"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
@@ -101,5 +105,26 @@
         android:inputType="number"
         fresco:layout_constraintLeft_toLeftOf="parent"
         fresco:layout_constraintTop_toBottomOf="@+id/pId" />
+
+    <Button
+        android:id="@+id/buttonBorrar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Borrar"
+        android:layout_marginTop="8dp"
+        fresco:layout_constraintTop_toBottomOf="@+id/buttonComprar"
+        android:layout_marginRight="0dp"
+        fresco:layout_constraintRight_toRightOf="@+id/buttonComprar" />
+
+    <ProgressBar
+        android:id="@+id/pbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        fresco:layout_constraintLeft_toLeftOf="parent"
+        fresco:layout_constraintRight_toRightOf="parent"
+        fresco:layout_constraintTop_toTopOf="parent"
+        fresco:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>

@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,8 @@ public class VentaActivity extends AppCompatActivity
   @BindView(R.id.pPrice) TextView productPrice;
   @BindView(R.id.pId) TextView productId;
   @BindView(R.id.cantidadEditText) EditText cantidadET;
+  @BindView(R.id.buttonBorrar) Button borrar;
+  @BindView(R.id.pbar) View progressBar;
 
   @BindView(R.id.productImage) SimpleDraweeView drawee_image;
 
@@ -92,7 +95,12 @@ public class VentaActivity extends AppCompatActivity
   @OnClick(R.id.buttonComprar) public void venta(View view) {
 
     String url = "http://ddm.coma.mx/api/sales";
-
+    try {
+      if (Integer.parseInt(cantidadET.getText().toString()) > product.getStock()) return;
+    } catch (NumberFormatException e) {
+      return;
+    }
+    progressBar.setVisibility(View.VISIBLE);
     JSONObject params = new JSONObject();
     JSONObject latlng = new JSONObject();
     JSONObject sale = new JSONObject();
@@ -101,7 +109,7 @@ public class VentaActivity extends AppCompatActivity
       latlng.put("lat", position.getLat());
       latlng.put("lng", position.getLng());
       params.put("product", product.getId());
-      params.put("quantity", productStock.getText());
+      params.put("quantity", cantidadET.getText().toString() );
       params.put("location", latlng);
       params.put("type", PreferenceManager.getDefaultSharedPreferences(VentaActivity.this)
           .getInt("access", 0)); //Comprador
@@ -113,7 +121,7 @@ public class VentaActivity extends AppCompatActivity
     JsonObjectRequest jsonObjReq =
         new JsonObjectRequest(Request.Method.POST, url, sale, new Response.Listener<JSONObject>() {
           @Override public void onResponse(JSONObject response) {
-
+            progressBar.setVisibility(View.INVISIBLE);
             Log.d("VENTA", response.toString());
             Toast.makeText(VentaActivity.this, "Venta Exitosa", Toast.LENGTH_SHORT);
             finish();
@@ -121,6 +129,7 @@ public class VentaActivity extends AppCompatActivity
         }, new Response.ErrorListener() {
 
           @Override public void onErrorResponse(VolleyError error) {
+            progressBar.setVisibility(View.INVISIBLE);
             VolleyLog.d("VENTA", error.getMessage());
           }
         }) {
